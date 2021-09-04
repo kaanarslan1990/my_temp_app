@@ -1,46 +1,56 @@
-import { useState, useReducer } from "react";
-import {reducer} from "./reducer";
+import "./App.css";
+import Buttons from "./components/material-ui/buttons/Buttons";
+import CheckBoxComp from "./components/material-ui/checkbox/CheckBoxComp";
+import TextFieldComp from "./components/material-ui/text-field/TextFieldComp";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { green, orange } from "@material-ui/core/colors";
+import TypographyComp from "./components/material-ui/typography/TypographyComp";
+import Wrapper from "./components/material-ui/wrapper/Wrapper";
+import Cards from "./components/material-ui/cards/Cards";
+import AppBarComp from "./components/material-ui/app-bar/AppBarComp";
+import StyledButton from "./components/material-ui/styled-button/StyledButton";
 
+// import StyledComponents from "./components/styled-comp";
 
-const initialState = {
-  data:'',
-  loading:false,
-  error:'',
-}
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: orange[400],
+    },
+    secondary: {
+      main: green[300],
+    },
+  },
 
+  typography: {
+    h2: {
+      fontSize: 38,
+      padding: 2,
+    },
+    subtitle1: {
+      marginBottom: 5,
+    },
+  },
+});
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const {data, loading, error} = state;
-
-
-  // const [data, setData] = useState("");
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState("");
-
-  const fetchData = () => {
-  dispatch({type: 'FETCH_START'});
-
-    fetch("https://api.thecatapi.com/v1/images/search")
-      .then((res) => res.json())
-      .then((res) => {
-  dispatch({type: 'FETCH_SUCCESS', payload: res[0].url });
-      }).catch(()=>{
-  dispatch({type: 'FETCH_FAİL', payload: "Something went wrong!" });
-      })
-  };
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <button
-        onClick={fetchData}
-        disabled={loading}
-        style={{ width: "100px", margin: "1rem" }}
-      >
-        Fetch Data
-      </button>
-      {data && <img src={data} alt="cat-img" />}
-      {error && <p>{error}</p>}
-    </div>
+    <ThemeProvider theme={theme}>
+      <Wrapper>
+        <AppBarComp />
+        <div className="App">
+          <header className="App-header">
+            {/* <StyledComponents /> */}
+            <StyledButton />
+            <TypographyComp />
+            <Cards />
+            <TextFieldComp />
+            <CheckBoxComp />
+            <Buttons />
+          </header>
+        </div>
+      </Wrapper>
+    </ThemeProvider>
   );
 }
 export default App;
